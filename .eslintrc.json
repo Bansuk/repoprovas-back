@@ -3,7 +3,7 @@
   "root": true,
   "extends": ["airbnb-base", "airbnb-typescript/base", "prettier"],
   "parserOptions": {
-    "project": "backend/tsconfig.json"
+    "project": "tsconfig.json"
   },
   "plugins": ["@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
