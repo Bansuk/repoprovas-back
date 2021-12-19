@@ -14,10 +14,10 @@ export default class ExamEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'text' })
   name: string;
 
-  @Column()
+  @Column({ type: 'text' })
   link: string;
 
   @ManyToOne(() => Category, (category) => category.id)

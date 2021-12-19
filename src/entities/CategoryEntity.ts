@@ -6,6 +6,6 @@ export default class CategoryEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'text' })
   name: string;
 }

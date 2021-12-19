@@ -12,7 +12,7 @@ const getCategories = async (
     return res.status(200).send(categories);
   } catch (error) {
     if (error instanceof CategoryError)
-      return res.status(400).send(error.message);
+      return res.status(404).send(error.message);
     next();
   }
 };

@@ -6,6 +6,6 @@ export default class ProfessorEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'text' })
   name: string;
 }
