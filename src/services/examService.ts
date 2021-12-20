@@ -75,7 +75,7 @@ const retrieveExamsByCourse = async (id: any) => {
     .execute();
 
   if (!exams.length)
-    throw new ExamError('There are no available exams for this professor.');
+    throw new ExamError('There are no available exams for this course.');
   return exams;
 };
 
