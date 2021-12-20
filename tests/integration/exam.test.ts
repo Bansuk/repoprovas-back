@@ -44,3 +44,20 @@ describe('GET /exams by professor', () => {
     expect(result.status).toEqual(200);
   });
 });
+
+describe('GET /exams by course', () => {
+  test('should return 404 when there are no exams for the provided course', async () => {
+    const result = await supertest(app).get(`/exams/course/${1}`);
+
+    expect(result.status).toEqual(404);
+  });
+
+  test('should return 200 when there are exams available for the provided course', async () => {
+    const exam = await createExam();
+    const courseId = exam.className.course.id;
+    const result = await supertest(app).get(`/exams/course/${courseId}`);
+
+    expect(result.body.length).toBe(1);
+    expect(result.status).toEqual(200);
+  });
+});
