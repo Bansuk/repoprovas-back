@@ -1,3 +1,4 @@
+import faker from 'faker';
 import '../../src/setup';
 import supertest from 'supertest';
 import { getRepository } from 'typeorm';
@@ -7,7 +8,10 @@ import Professor from '../../src/entities/ProfessorEntity';
 import Exam from '../../src/entities/ExamEntity';
 import Class from '../../src/entities/ClassEntity';
 import Course from '../../src/entities/CourseEntity';
+import Category from '../../src/entities/CategoryEntity';
 import { createExam } from '../factories/examFactory';
+import { createCategory } from '../factories/categoryFactory';
+import { createClass } from '../factories/classFactory';
 
 beforeAll(async () => {
   await init();
@@ -26,6 +30,27 @@ afterAll(async () => {
   await getRepository(Course).delete({});
   await getRepository(Professor).delete({});
   await closeConnection();
+});
+
+describe('POST /exam', () => {
+  test('should return 400 when provided link is not valid', async () => {
+    interface ExamDB {
+      name: string;
+      link: string;
+      category: Category;
+      className: Class;
+    }
+
+    const exam: ExamDB = {
+      name: faker.lorem.word(),
+      link: `${faker.internet.url()}`,
+      category: await createCategory(),
+      className: await createClass(),
+    };
+    const result = await supertest(app).post('/exam').send(exam);
+
+    expect(result.status).toEqual(400);
+  });
 });
 
 describe('GET /exams by professor', () => {
