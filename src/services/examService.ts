@@ -1,6 +1,12 @@
 import { Exam, ExamDB } from '../interfaces/exam';
+import { getManager } from 'typeorm';
 import * as examServiceHelper from '../helpers/examServiceHelper';
 import ExamError from '../errors/examError';
+import Professor from '../entities/ProfessorEntity';
+import ExamEntity from '../entities/ExamEntity';
+import Class from '../entities/ClassEntity';
+import Category from '../entities/CategoryEntity';
+import Course from '../entities/CourseEntity';
 
 const createExam = async (exam: Exam) => {
   if (!examServiceHelper.isLinkAPDF(exam.examLink))
@@ -37,4 +43,22 @@ const createExam = async (exam: Exam) => {
   await examServiceHelper.insertExam(examDB);
 };
 
-export { createExam };
+const retrieveExamsByProfessor = async (id: any) => {
+  const exams = await getManager()
+    .createQueryBuilder(ExamEntity, 'exam')
+    .select('exam.link, exam.name')
+    .addSelect('category.name')
+    .addSelect('course.name')
+    .innerJoin(Class, 'class', 'exam.class_id = class.id')
+    .innerJoin(Professor, 'professor', 'class.professor_id = professor.id')
+    .innerJoin(Category, 'category', 'exam.category_id = category.id')
+    .innerJoin(Course, 'course', 'class.course_id = course.id')
+    .where('professor.id = :id', { id: id })
+    .execute();
+
+  if (!exams.length)
+    throw new ExamError('There are no available exams for this professor.');
+  return exams;
+};
+
+export { createExam, retrieveExamsByProfessor };
