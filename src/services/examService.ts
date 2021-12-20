@@ -1,5 +1,5 @@
-import { Exam, ExamDB } from '../interfaces/exam';
 import { getManager } from 'typeorm';
+import { Exam, ExamDB } from '../interfaces/exam';
 import * as examServiceHelper from '../helpers/examServiceHelper';
 import ExamError from '../errors/examError';
 import Professor from '../entities/ProfessorEntity';
@@ -53,7 +53,7 @@ const retrieveExamsByProfessor = async (id: any) => {
     .innerJoin(Professor, 'professor', 'class.professor_id = professor.id')
     .innerJoin(Category, 'category', 'exam.category_id = category.id')
     .innerJoin(Course, 'course', 'class.course_id = course.id')
-    .where('professor.id = :id', { id: id })
+    .where('professor.id = :id', { id })
     .execute();
 
   if (!exams.length)

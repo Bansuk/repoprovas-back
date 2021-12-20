@@ -21,7 +21,9 @@ const createExam = async () => {
     className: await createClass(),
   };
 
-  await getRepository(Exam).insert(exam);
+  const newExam = getRepository(Exam).create(exam);
+  await getRepository(Exam).save(newExam);
+  return newExam;
 };
 
 export { createExam };
