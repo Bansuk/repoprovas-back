@@ -3,7 +3,8 @@
   "root": true,
   "extends": ["airbnb-base", "airbnb-typescript/base", "prettier"],
   "parserOptions": {
-    "project": "backend/tsconfig.json"
+    "ecmaVersion": 12,
+    "sourceType": "module"
   },
   "plugins": ["@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
