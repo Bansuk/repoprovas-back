@@ -7,7 +7,7 @@ import Course from '../entities/CourseEntity';
 const retrieveCourses = async () => {
   const courses = await getManager()
     .createQueryBuilder(Exam, 'exam')
-    .select('course.id, COUNT(course.id), course.name')
+    .select('course.id, COUNT(course.id), course.name, course.term')
     .innerJoin(Class, 'class', 'exam.class_id = class.id')
     .innerJoin(Course, 'course', 'class.course = course.id')
     .groupBy('course.id')
