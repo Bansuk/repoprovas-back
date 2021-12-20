@@ -35,4 +35,20 @@ const getExamsByProfessor = async (
   }
 };
 
-export { newExam, getExamsByProfessor };
+const getExamsByCourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { id } = req.params;
+
+  try {
+    const exams = await examService.retrieveExamsByCourse(id);
+    return res.status(200).send(exams);
+  } catch (error) {
+    if (error instanceof ExamError) return res.status(404).send(error.message);
+    next();
+  }
+};
+
+export { newExam, getExamsByProfessor, getExamsByCourse };
