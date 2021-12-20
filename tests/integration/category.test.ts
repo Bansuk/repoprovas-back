@@ -4,6 +4,7 @@ import { getRepository } from 'typeorm';
 import app, { init } from '../../src/app';
 import { closeConnection } from '../utils/database';
 import Category from '../../src/entities/CategoryEntity';
+import Exam from '../../src/entities/ExamEntity';
 import { createCategory } from '../factories/categoryFactory';
 
 beforeAll(async () => {
@@ -11,10 +12,12 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  await getRepository(Exam).delete({});
   await getRepository(Category).delete({});
 });
 
 afterAll(async () => {
+  await getRepository(Exam).delete({});
   await getRepository(Category).delete({});
   await closeConnection();
 });

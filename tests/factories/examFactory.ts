@@ -1,21 +1,27 @@
 import faker from 'faker';
 import { getRepository } from 'typeorm';
 import Category from '../../src/entities/CategoryEntity';
+import Exam from '../../src/entities/ExamEntity';
+import Class from '../../src/entities/ClassEntity';
+import { createCategory } from './categoryFactory';
+import { createClass } from './classFactory';
 
-const NUM_CATEGORIES = 4;
+interface ExamDB {
+  name: string;
+  link: string;
+  category: Category;
+  className: Class;
+}
 
-const createExam = () => {
-  const exam = {
-    name: faker.lorem.word,
-    category: getRandomCategory(),
-    course,
-    professor,
-    examLink: faker.internet.url,
+const createExam = async () => {
+  const exam: ExamDB = {
+    name: faker.lorem.word(),
+    link: `${faker.internet.url()}.pdf`,
+    category: await createCategory(),
+    className: await createClass(),
   };
+
+  await getRepository(Exam).insert(exam);
 };
 
-const getRandomCategory = async () => {
-  const randomNumber = Math.floor(Math.random() * NUM_CATEGORIES);
-  const category = await getRepository(Category).findOne(randomNumber);
-  return category.name;
-};
+export { createExam };
