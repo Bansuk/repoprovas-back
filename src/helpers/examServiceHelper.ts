@@ -32,12 +32,11 @@ const findProfessor = async (professorName: string) => {
 };
 
 const findClass = async (courseId: number, professorId: number) => {
-  const classFound = await getRepository(Class)
-    .createQueryBuilder('class')
-    .where('class.course_id = :value', { value: courseId })
-    .andWhere('class.professor_id = :value', { value: professorId })
-    .execute();
-  return classFound[0].class_id;
+  const classFound = await getRepository(Class).find({
+    where: { course: courseId, professor: professorId },
+  });
+
+  return classFound[0].id;
 };
 
 const insertExam = async (exam: ExamDB) => {

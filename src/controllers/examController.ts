@@ -14,6 +14,7 @@ const newExam = async (req: Request, res: Response, next: NextFunction) => {
     await examService.createExam(exam);
     return res.sendStatus(201);
   } catch (error) {
+    console.log(error);
     if (error instanceof ExamError) return res.status(404).send(error.message);
     next();
   }
