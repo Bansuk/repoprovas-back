@@ -61,4 +61,22 @@ const retrieveExamsByProfessor = async (id: any) => {
   return exams;
 };
 
-export { createExam, retrieveExamsByProfessor };
+const retrieveExamsByCourse = async (id: any) => {
+  const exams = await getManager()
+    .createQueryBuilder(ExamEntity, 'exam')
+    .select('exam.link, exam.name')
+    .addSelect('category.name')
+    .addSelect('professor.name')
+    .innerJoin(Class, 'class', 'exam.class_id = class.id')
+    .innerJoin(Professor, 'professor', 'class.professor_id = professor.id')
+    .innerJoin(Category, 'category', 'exam.category_id = category.id')
+    .innerJoin(Course, 'course', 'class.course_id = course.id')
+    .where('course.id = :id', { id })
+    .execute();
+
+  if (!exams.length)
+    throw new ExamError('There are no available exams for this course.');
+  return exams;
+};
+
+export { createExam, retrieveExamsByProfessor, retrieveExamsByCourse };
